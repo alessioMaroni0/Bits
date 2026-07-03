@@ -1,7 +1,7 @@
 /*
  * BITS Library
  * * This file is covered by the MIT License.
- * Copyright (c) 2026 alessiomaroni0
+ * Copyright (c) 2026 alessioMaroni0
 */
 
 #ifndef LIMITS_H
