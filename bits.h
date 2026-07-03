@@ -17,4 +17,13 @@
 #define OK_SUB_U32(x, y) \
     ((x) >= (y))
 
+#define REVERSE(x) (~(x))
+
+#define BIT_SET(x, n) ((x) |= (1ULL << (n)))
+#define BIT_CLEAR(x, n)  ((x) &= ~(1ULL << (n)))
+#define BIT_TOGGLE(x, n) ((x) ^= (1ULL << (n)))
+#define BIT_CHECK(x, n)  (((x) >> (n)) & 1ULL)
+#define SET_ALL_ONE(x) ((x) = ~0)
+#define SET_ALL_ZERO(x) ((x) = 0)
+
 #endif
