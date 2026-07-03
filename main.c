@@ -2,9 +2,9 @@
 #include "bits.h"
 
 int main() {
-    int a = INT_MAX;
-    int b = INT_MIN;
-    unsigned int c = UINT_MAX;
+    int a = I32_MAX;
+    int b = I32_MIN;
+    unsigned int c = U32_MAX;
     
     printf("--- 1. Limiti dei Tipi a 32 Bit ---\n");
     printf("Il valore INT_MAX (a) è: %d\n", a);
@@ -13,7 +13,7 @@ int main() {
 
     printf("--- 2. Controlli Overflow/Underflow ---\n");
     
-    int x_sum = INT_MAX;
+    int x_sum = I32_MAX;
     int y_sum = 1;
     if (OK_SUM_I32(x_sum, y_sum)) {
         printf("Somma con segno sicura: %d\n", x_sum + y_sum);
@@ -21,7 +21,7 @@ int main() {
         printf("[ATTENZIONE] Overflow rilevato! Non posso sommare %d + %d\n", x_sum, y_sum);
     }
 
-    unsigned int ux_sum = UINT_MAX;
+    unsigned int ux_sum = U32_MAX;
     unsigned int uy_sum = 1;
     if (OK_SUM_U32(ux_sum, uy_sum)) {
         printf("Somma unsigned sicura: %u\n", ux_sum + uy_sum);
@@ -29,7 +29,7 @@ int main() {
         printf("[ATTENZIONE] Overflow unsigned rilevato!\n");
     }
 
-    int x_sub = INT_MIN;
+    int x_sub = I32_MIN;
     int y_sub = 1;
     if (OK_SUB_I32(x_sub, y_sub)) {
         printf("Sottrazione sicura: %d\n", x_sub - y_sub);

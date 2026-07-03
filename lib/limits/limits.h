@@ -1,8 +1,10 @@
 #ifndef LIMITS_H
 #define LIMITS_H
 
-#define UINT_MAX (~0U)
-#define INT_MAX (int)(UINT_MAX >> 1)
-#define INT_MIN (-INT_MAX - 1)
+#include <stdint.h>
+
+#define U32_MAX (~0U)
+#define I32_MAX (uint32_t)(U32_MAX >> 1)
+#define I32_MIN (-I32_MAX - 1)
 
 #endif
