@@ -24,6 +24,9 @@
 #define BIT_CHECK(x, n)  (((x) >> (n)) & 1ULL)
 #define SET_ALL_ONE(x) ((x) = ~0)
 #define SET_ALL_ZERO(x) ((x) = 0)
+#define BIT_POPCOUNT(x) __builtin_popcount(x)
+#define BIT_ROL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+#define BIT_ROR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
 
 #define SWAP_ENDIAN32(x) ( \
     (((x) & 0x000000FFU) << 24) | \
