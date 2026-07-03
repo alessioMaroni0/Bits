@@ -1,2 +1,4 @@
-/build
-/.vscode
+build/
+.vscode/
+compile_flags.txt
+*.sh
