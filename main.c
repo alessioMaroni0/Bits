@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "bits.h"
+#include "lib/bits.h"
 
 int main() {
     int a = I32_MAX;
