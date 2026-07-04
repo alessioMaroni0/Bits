@@ -4,6 +4,7 @@
 [![Library Type](https://img.shields.io/badge/Type-Header--Only-green.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 [![Author](https://img.shields.io/badge/Author-Ale-orange.svg)](https://github.com/alessioMaroni0)
+[![Version](https://img.shields.io/badge/Version-1.3.1-blue.svg)](#)
 
 Una libreria in C sviluppata a scopo didattico e di apprendimento durante lo studio del Capitolo 2 di *Computer Systems: A Programmer's Perspective* (CS:APP).
 
