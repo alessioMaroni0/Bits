@@ -37,8 +37,11 @@
 #define BIT_ROL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 #define BIT_ROL64(x, n) (((x) << (n)) | ((x) >> (64 - (n))))
 
-// Performs a 32-bit circular right shift (Rotate Right) by n positions
+// Performs a bits circular right shift (Rotate Right) by n positions
+#define BIT_ROR8(x, n) (((x) >> (n)) | ((x) << (8 - (n))))
+#define BIT_ROR16(x, n) (((x) >> (n)) | ((x) << (16 - (n))))
 #define BIT_ROR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
+#define BIT_ROR64(x, n) (((x) >> (n)) | ((x) << (64 - (n))))
 
 // Reverses the byte order of a 32-bit value (Endianness conversion)
 #define SWAP_ENDIAN32(x) ( \
