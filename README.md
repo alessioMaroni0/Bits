@@ -42,3 +42,13 @@ Bits
 │   └── main.c            # Test and verification file
 ├── Dockerfile            # Isolated testing environment on Alpine Linux
 └── Makefile              # Test build automation
+```
+
+---
+
+## What I Learned
+Building this library made concrete several concepts from CS:APP Chapter 2:
+- Why unsigned overflow wraps predictably while signed overflow is undefined behavior in C
+- How two's complement enables the same hardware adder to work for both signed and unsigned integers
+- Why arithmetic right shift and logical right shift produce different results on negative numbers
+- How IEEE 754 floating point represents precision loss at the boundaries of integer ranges
