@@ -6,39 +6,39 @@
 [![Author](https://img.shields.io/badge/Author-Ale-orange.svg)](https://github.com/alessioMaroni0)
 [![Version](https://img.shields.io/badge/Version-1.5.1-blue.svg)](#)
 
-Una libreria in C sviluppata a scopo didattico e di apprendimento durante lo studio del Capitolo 2 di *Computer Systems: A Programmer's Perspective* (CS:APP).
+A C library developed for educational purposes while studying Chapter 2 of *Computer Systems: A Programmer's Perspective* (CS:APP).
 
-Il progetto mira a comprendere a basso livello come i tipi di dato vengono rappresentati, memorizzati e manipolati in memoria, fornendo strumenti per il bit-twiddling e il controllo accurato dell'overflow aritmetico.
-
----
-
-## Caratteristiche della Libreria
-
-* **Header-Only:** La libreria non richiede compilazione separata o collegamenti a file binari dinamici. È composta da soli file header `.h` contenenti definizioni e macro.
-* **Zero Overhead:** Sfrutta il preprocessore per garantire la massima efficienza a runtime, eliminando il costo di chiamata delle funzioni.
-* **Sicurezza:** Fornisce macro avanzate per verificare preventivamente l'overflow in conformità con le specifiche di architettura dei calcolatori.
+The project aims to provide a low-level understanding of how data types are represented, stored, and manipulated in memory, offering tools for bit-twiddling and accurate arithmetic overflow checking.
 
 ---
 
-## Scelte architetturali
-Nel progetto si usano solo file header per semplicità.
-Vengono definite macros nel modo più semplice ed efficace possibili che poi vengono riutilizzate nella stesssa libreria 
+## Key Features
+
+* **Header-Only:** The library requires no separate compilation or dynamic linking. It consists entirely of `.h` header files containing definitions and macros.
+* **Zero Overhead:** It leverages the preprocessor to ensure maximum runtime efficiency, eliminating function call overhead.
+* **Safety:** It provides advanced macros to proactively detect overflow in compliance with computer architecture specifications.
 
 ---
 
-## Struttura del Progetto
+## Architectural Choices
+For the sake of simplicity, the project relies exclusively on header files. 
+Macros are defined in the simplest and most effective way possible, allowing them to be cleanly reused throughout the library itself.
+
+---
+
+## Project Structure
 
 ```text
 Bits
 ├── lib/
-│   ├── bits.h            # Header collettore principale
+│   ├── bits.h            # Main collector header
 │   ├── limits/
-│   │   └── limits.h      # Costanti di limite per interi a precisione fissa
+│   │   └── limits.h      # Limit constants for fixed-precision integers
 │   ├── math/
-│   │   └── math.h        # Controlli di sicurezza per operazioni aritmetiche
+│   │   └── math.h        # Safety checks for arithmetic operations
 │   └── utils/
-│       └── utils.h       # Macro di manipolazione bit-by-bit
+│       └── utils.h       # Bit-by-bit manipulation macros
 ├── test/
-│   └── main.c            # File di test e verifica
-├── Dockerfile            # Ambiente di testing isolato su Alpine Linux
-└── Makefile              # Automazione del build di test
+│   └── main.c            # Test and verification file
+├── Dockerfile            # Isolated testing environment on Alpine Linux
+└── Makefile              # Test build automation
