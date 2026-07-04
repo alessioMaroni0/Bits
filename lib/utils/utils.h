@@ -23,13 +23,16 @@
 #define BIT_CHECK(x, n)  (((x) >> (n)) & 1ULL)
 
 // Sets all bits of x to 1
-#define SET_ALL_ONE(x) ((x) = ~0)
+#define SET_ALL_ONE(x) do { (x) = (typeof(x))~0ULL; } while(0)
 
 // Sets all bits of x to 0
-#define SET_ALL_ZERO(x) ((x) = 0)
+#define SET_ALL_ZERO(x) do { (x) = 0; } while(0)
 
 // Counts the total number of bits set to 1 using compiler builtin
-#define BIT_POPCOUNT(x) __builtin_popcount(x)
+#define BIT_POPCOUNT(x) __builtin_popcount((unsigned long long)(x))
+
+// Return 1 if is power of 2
+#define IS_POWER_OF2(x) (((x) > 0) && (((x) & ((x) - 1)) == 0))
 
 // Performs a bits circular left shift (Rotate Left) by n positions
 #define BIT_ROL8(x, n) (((x) << (n)) | ((x) >> (8 - (n))))
