@@ -31,8 +31,11 @@
 // Counts the total number of bits set to 1 using compiler builtin
 #define BIT_POPCOUNT(x) __builtin_popcount(x)
 
-// Performs a 32-bit circular left shift (Rotate Left) by n positions
+// Performs a bits circular left shift (Rotate Left) by n positions
+#define BIT_ROL8(x, n) (((x) << (n)) | ((x) >> (8 - (n))))
+#define BIT_ROL16(x, n) (((x) << (n)) | ((x) >> (16 - (n))))
 #define BIT_ROL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+#define BIT_ROL64(x, n) (((x) << (n)) | ((x) >> (64 - (n))))
 
 // Performs a 32-bit circular right shift (Rotate Right) by n positions
 #define BIT_ROR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
