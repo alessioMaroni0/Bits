@@ -43,12 +43,30 @@
 #define BIT_ROR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
 #define BIT_ROR64(x, n) (((x) >> (n)) | ((x) << (64 - (n))))
 
-// Reverses the byte order of a 32-bit value (Endianness conversion)
-#define SWAP_ENDIAN32(x) ( \
-    (((x) & 0x000000FFU) << 24) | \
-    (((x) & 0x0000FF00U) << 8)  | \
-    (((x) & 0x00FF0000U) >> 8)  | \
-    (((x) & 0xFF000000U) >> 24)   \
-)
+// Reverses the byte order of a bits value (Endianness conversion)
+#define SWAP_ENDIAN8(x) ((uint8_t)(x))
+
+#define SWAP_ENDIAN16(x) ((uint16_t)( \
+    (((uint16_t)(x) & 0x00FFU) << 8) | \
+    (((uint16_t)(x) & 0xFF00U) >> 8)   \
+))
+
+#define SWAP_ENDIAN32(x) ((uint32_t)( \
+    (((uint32_t)(x) & 0x000000FFU) << 24) | \
+    (((uint32_t)(x) & 0x0000FF00U) << 8)  | \
+    (((uint32_t)(x) & 0x00FF0000U) >> 8)  | \
+    (((uint32_t)(x) & 0xFF000000U) >> 24)   \
+))
+
+#define SWAP_ENDIAN64(x) ((uint64_t)( \
+    (((uint64_t)(x) & 0x00000000000000FFULL) << 56) | \
+    (((uint64_t)(x) & 0x000000000000FF00ULL) << 40) | \
+    (((uint64_t)(x) & 0x0000000000FF0000ULL) << 24) | \
+    (((uint64_t)(x) & 0x00000000FF000000ULL) << 8)  | \
+    (((uint64_t)(x) & 0x000000FF00000000ULL) >> 8)  | \
+    (((uint64_t)(x) & 0x0000FF0000000000ULL) >> 24) | \
+    (((uint64_t)(x) & 0x00FF000000000000ULL) >> 40) | \
+    (((uint64_t)(x) & 0xFF00000000000000ULL) >> 56)   \
+))
 
 #endif
