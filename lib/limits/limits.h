@@ -29,4 +29,30 @@
 #define I64_MAX (int64_t)(U64_MAX >> 1) // Max signed 64-bit: clear the sign bit (MSB)
 #define I64_MIN (-I64_MAX - 1)         // Min signed 64-bit: asymmetric two's complement lower bound
 
+
+// Basic c limits
+
+#define CHAR_BIT 8
+
+#define UCHAR_MAX ((unsigned char)~0)
+#define CHAR_MAX ((char)((unsigned char)~0 >> 1) < 0 ? (char)((unsigned char)~0) : (char)((unsigned char)~0 >> 1))
+#define CHAR_MIN ((char)0 < (char)-1 ? (-CHAR_MAX - 1) : 0)
+
+#define USHRT_MAX (unsigned short)(~0U)
+#define SHRT_MAX (short)(USHRT_MAX >> 1)
+#define SHRT_MIN (-SHRT_MAX - 1)
+
+#define UINT_MAX (unsigned int)(~0U)
+#define INT_MAX (int)(UINT_MAX >> 1)
+#define INT_MIN (-INT_MAX - 1)
+
+#define ULNG_MAX  (~0UL)
+#define LNG_MAX   ((long)(ULNG_MAX >> 1))
+#define LNG_MIN   (-LNG_MAX - 1)
+
+#define ULLNG_MAX (~0ULL)
+#define LLNG_MAX  ((long long)(ULLNG_MAX >> 1))
+#define LLNG_MIN  (-LLNG_MAX - 1)
+
+
 #endif
