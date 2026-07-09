@@ -7,8 +7,14 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-// Inverts all bits of x (Bitwise NOT)
+#include <stdint.h>
+
+/*
+ * REVERSE
+ * Inverts all bits of x (Bitwise NOT)
+ */
 #define REVERSE(x) (~(x))
+
 
 
 
@@ -17,21 +23,21 @@
  * Sets the n-th bit of x to 1,
  * where x is the target value 
  * and n is the bit position to set.
-*/
+ */
 static inline uint8_t bit_set_8(uint8_t x, int n) {
-    return x | (1U << n);
+    return (x | (1U << n));
 }
 
 static inline uint16_t bit_set_16(uint16_t x, int n) {
-    return x | (1U << n);
+    return (x | (1U << n));
 }
 
 static inline uint32_t bit_set_32(uint32_t x, int n) {
-    return x | (1UL << n);
+    return (x | (1UL << n));
 }
 
 static inline uint64_t bit_set_64(uint64_t x, int n) {
-    return x | (1ULL << n);
+    return (x | (1ULL << n));
 }
 
 /*
@@ -41,72 +47,251 @@ static inline uint64_t bit_set_64(uint64_t x, int n) {
  * Example: my_val = BIT_SET(my_val, 3);
  */
 #define BIT_SET(x, n) _Generic((x), \
-    uint8_t: bit_set_8(x, n), \
-    uint16_t: bit_set_16(x, n), \
-    uint32_t: bit_set_32(x, n), \
-    uint64_t: bit_set_64(x, n) \
+    uint8_t:     bit_set_8((x), (n)),  \
+    uint16_t:    bit_set_16((x), (n)), \
+    uint32_t:    bit_set_32((x), (n)), \
+    uint64_t:    bit_set_64((x), (n)), \
+    signed char: bit_set_8((x), (n)),  \
+    short:       bit_set_16((x), (n)), \
+    int:         bit_set_32((x), (n)), \
+    long long:   bit_set_64((x), (n)), \
+    default:     bit_set_64((x), (n))   \
+)
+
+
+
+/*
+ * BIT_CLEAR
+ * Sets the n-th bit of x to 0,
+ * where x is the target value 
+ * and n is the bit position to set.
+ */
+static inline uint8_t bit_clear_8(uint8_t x, int n) {
+    return (x & ~(1U << n));
+}
+
+static inline uint16_t bit_clear_16(uint16_t x, int n) {
+    return (x & ~(1U << n));
+}
+
+static inline uint32_t bit_clear_32(uint32_t x, int n) {
+    return (x & ~(1UL << n));
+}
+
+static inline uint64_t bit_clear_64(uint64_t x, int n) {
+    return (x & ~(1ULL << n));
+}
+
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x' and the bit position as 'n'.
+ * The macro automatically selects the correct type-specific function at compile time.
+ * Example: my_val = BIT_CLEAR(my_val, 6);
+ */
+#define BIT_CLEAR(x, n) _Generic((x), \
+    uint8_t:        bit_clear_8((x), (n)),  \
+    uint16_t:       bit_clear_16((x), (n)), \
+    uint32_t:       bit_clear_32((x), (n)), \
+    uint64_t:       bit_clear_64((x), (n)), \
+    signed char:    bit_clear_8((x), (n)),  \
+    short:          bit_clear_16((x), (n)), \
+    int:            bit_clear_32((x), (n)), \
+    long long:      bit_clear_64((x), (n)), \
+    default:        bit_clear_64((x), (n))  \
 )
 
 
 
 
-// Clears the n-th bit of x to 0
-#define BIT_CLEAR(x, n)  ((x) &= ~(1ULL << (n)))
+/*
+ * BIT_TOGGLE
+ * Toggles (flips) the n-th bit of x,
+ * where x is the target value 
+ * and n is the bit position to toggle.
+ */
+static inline uint8_t bit_toggle_8(uint8_t x, int n) {
+    return (x ^ (1U << n));
+}
 
-// Toggles (flips) the n-th bit of x
-#define BIT_TOGGLE(x, n) ((x) ^= (1ULL << (n)))
+static inline uint16_t bit_toggle_16(uint16_t x, int n) {
+    return (x ^ (1U << n));
+}
 
-// Extracts the value of the n-th bit of x (returns 0 or 1)
-#define BIT_CHECK(x, n)  (((x) >> (n)) & 1ULL)
+static inline uint32_t bit_toggle_32(uint32_t x, int n) {
+    return (x ^ (1UL << n));
+}
 
-// Sets all bits of x to 1
-#define SET_ALL_ONE(x) do { (x) = (typeof(x))~0ULL; } while(0)
+static inline uint64_t bit_toggle_64(uint64_t x, int n) {
+    return (x ^ (1ULL << n));
+}
 
-// Sets all bits of x to 0
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x' and the bit position as 'n'.
+ * The macro automatically selects the correct type-specific function at compile time.
+ * Example: my_val = BIT_TOGGLE(my_val, 2);
+ */
+#define BIT_TOGGLE(x, n) _Generic((x), \
+    uint8_t:        bit_toggle_8((x), (n)),  \
+    uint16_t:       bit_toggle_16((x), (n)), \
+    uint32_t:       bit_toggle_32((x), (n)), \
+    uint64_t:       bit_toggle_64((x), (n)), \
+    signed char:    bit_toggle_8((x), (n)),  \
+    short:          bit_toggle_16((x), (n)), \
+    int:            bit_toggle_32((x), (n)), \
+    long long:      bit_toggle_64((x), (n)), \
+    default:        bit_toggle_64((x), (n))  \
+)
+
+
+
+
+/*
+ * SET_ALL_ONE
+ * Sets all bits of x to 1.
+ * Works safely for both signed and unsigned integer types.
+ */
+#define SET_ALL_ONE(x) do { (x) = -1; } while(0)
+
+/*
+ * SET_ALL_ZERO
+ * Sets all bits of x to 0.
+ * Works safely for all integer types.
+ */
 #define SET_ALL_ZERO(x) do { (x) = 0; } while(0)
 
-// Counts the total number of bits set to 1 using compiler builtin
-#define BIT_POPCOUNT(x) __builtin_popcount((unsigned long long)(x))
+/*
+ * BIT_POPCOUNT
+ * Counts the total number of bits set to 1.
+ * Uses the compiler 64-bit builtin popcount for maximum efficiency.
+ */
+#define BIT_POPCOUNT(x) __builtin_popcountll((unsigned long long)(x))
 
-// Return 1 if is power of 2
+/*
+ * IS_POWER_OF2
+ * Returns 1 (true) if x is a power of 2, and 0 (false) otherwise.
+ * Works safely for all signed and unsigned integer types.
+ */
 #define IS_POWER_OF2(x) (((x) > 0) && (((x) & ((x) - 1)) == 0))
 
-// Performs a bits circular left shift (Rotate Left) by n positions
-#define BIT_ROL8(x, n) (((x) << (n)) | ((x) >> (8 - (n))))
-#define BIT_ROL16(x, n) (((x) << (n)) | ((x) >> (16 - (n))))
-#define BIT_ROL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
-#define BIT_ROL64(x, n) (((x) << (n)) | ((x) >> (64 - (n))))
+/*
+ * BIT_ROL
+ * Rotates the bits of x to the left by n positions (Circular Shift).
+ * Safe for any value of n (including 0).
+ */
+static inline uint8_t bit_rol_8(uint8_t x, int n) {
+    return (uint8_t)(((x) << (n & 7)) | ((x) >> ((8 - n) & 7)));
+}
 
-// Performs a bits circular right shift (Rotate Right) by n positions
-#define BIT_ROR8(x, n) (((x) >> (n)) | ((x) << (8 - (n))))
-#define BIT_ROR16(x, n) (((x) >> (n)) | ((x) << (16 - (n))))
-#define BIT_ROR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
-#define BIT_ROR64(x, n) (((x) >> (n)) | ((x) << (64 - (n))))
+static inline uint16_t bit_rol_16(uint16_t x, int n) {
+    return (uint16_t)(((x) << (n & 15)) | ((x) >> ((16 - n) & 15)));
+}
 
-// Reverses the byte order of a bits value (Endianness conversion)
-#define SWAP_ENDIAN8(x) ((uint8_t)(x))
+static inline uint32_t bit_rol_32(uint32_t x, int n) {
+    return (uint32_t)(((x) << (n & 31)) | ((x) >> ((32 - n) & 31)));
+}
 
-#define SWAP_ENDIAN16(x) ((uint16_t)( \
-    (((uint16_t)(x) & 0x00FFU) << 8) | \
-    (((uint16_t)(x) & 0xFF00U) >> 8)   \
-))
+static inline uint64_t bit_rol_64(uint64_t x, int n) {
+    return (uint64_t)(((x) << (n & 63)) | ((x) >> ((64 - n) & 63)));
+}
 
-#define SWAP_ENDIAN32(x) ((uint32_t)( \
-    (((uint32_t)(x) & 0x000000FFU) << 24) | \
-    (((uint32_t)(x) & 0x0000FF00U) << 8)  | \
-    (((uint32_t)(x) & 0x00FF0000U) >> 8)  | \
-    (((uint32_t)(x) & 0xFF000000U) >> 24)   \
-))
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x' and the rotation count as 'n'.
+ * The macro automatically selects the correct type-specific function at compile time.
+ * Example: my_val = BIT_ROL(my_val, 4);
+ */
+#define BIT_ROL(x, n) _Generic((x), \
+    uint8_t:        bit_rol_8((x), (n)),  \
+    uint16_t:       bit_rol_16((x), (n)), \
+    uint32_t:       bit_rol_32((x), (n)), \
+    uint64_t:       bit_rol_64((x), (n)), \
+    signed char:    bit_rol_8((x), (n)),  \
+    short:          bit_rol_16((x), (n)), \
+    int:            bit_rol_32((x), (n)), \
+    long long:      bit_rol_64((x), (n)), \
+    default:        bit_rol_64((x), (n))  \
+)
 
-#define SWAP_ENDIAN64(x) ((uint64_t)( \
-    (((uint64_t)(x) & 0x00000000000000FFULL) << 56) | \
-    (((uint64_t)(x) & 0x000000000000FF00ULL) << 40) | \
-    (((uint64_t)(x) & 0x0000000000FF0000ULL) << 24) | \
-    (((uint64_t)(x) & 0x00000000FF000000ULL) << 8)  | \
-    (((uint64_t)(x) & 0x000000FF00000000ULL) >> 8)  | \
-    (((uint64_t)(x) & 0x0000FF0000000000ULL) >> 24) | \
-    (((uint64_t)(x) & 0x00FF000000000000ULL) >> 40) | \
-    (((uint64_t)(x) & 0xFF00000000000000ULL) >> 56)   \
-))
+
+
+
+/*
+ * BIT_ROR
+ * Rotates the bits of x to the right by n positions (Circular Shift).
+ * Safe for any value of n (including 0).
+ */
+static inline uint8_t bit_ror_8(uint8_t x, int n) {
+    return (uint8_t)(((x) >> (n & 7)) | ((x) << ((8 - n) & 7)));
+}
+
+static inline uint16_t bit_ror_16(uint16_t x, int n) {
+    return (uint16_t)(((x) >> (n & 15)) | ((x) << ((16 - n) & 15)));
+}
+
+static inline uint32_t bit_ror_32(uint32_t x, int n) {
+    return (uint32_t)(((x) >> (n & 31)) | ((x) << ((32 - n) & 31)));
+}
+
+static inline uint64_t bit_ror_64(uint64_t x, int n) {
+    return (uint64_t)(((x) >> (n & 63)) | ((x) << ((64 - n) & 63)));
+}
+
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x' and the rotation count as 'n'.
+ * The macro automatically selects the correct type-specific function at compile time.
+ * Example: my_val = BIT_ROR(my_val, 4);
+ */
+#define BIT_ROR(x, n) _Generic((x), \
+    uint8_t:        bit_ror_8((x), (n)),  \
+    uint16_t:       bit_ror_16((x), (n)), \
+    uint32_t:       bit_ror_32((x), (n)), \
+    uint64_t:       bit_ror_64((x), (n)), \
+    signed char:    bit_ror_8((x), (n)),  \
+    short:          bit_ror_16((x), (n)), \
+    int:            bit_ror_32((x), (n)), \
+    long long:      bit_ror_64((x), (n)), \
+    default:        bit_ror_64((x), (n))  \
+)
+
+/*
+ * BIT_SWAP_ENDIAN
+ * Reverses the byte order of an integer value (Endianness conversion).
+ * Uses compiler builtins for hardware-accelerated byte swapping.
+ */
+static inline uint8_t bit_swap_endian_8(uint8_t x) {
+    return x; // Un singolo byte non ha ordine da invertire
+}
+
+static inline uint16_t bit_swap_endian_16(uint16_t x) {
+    return __builtin_bswap16(x);
+}
+
+static inline uint32_t bit_swap_endian_32(uint32_t x) {
+    return __builtin_bswap32(x);
+}
+
+static inline uint64_t bit_swap_endian_64(uint64_t x) {
+    return __builtin_bswap64(x);
+}
+
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x'.
+ * The macro automatically selects the correct byte-swap operation at compile time.
+ * Example: my_val = BIT_SWAP_ENDIAN(my_val);
+ */
+#define BIT_SWAP_ENDIAN(x) _Generic((x), \
+    uint8_t:        bit_swap_endian_8(x),  \
+    uint16_t:       bit_swap_endian_16(x), \
+    uint32_t:       bit_swap_endian_32(x), \
+    uint64_t:       bit_swap_endian_64(x), \
+    signed char:    bit_swap_endian_8(x),  \
+    short:          bit_swap_endian_16(x), \
+    int:            bit_swap_endian_32(x), \
+    long long:      bit_swap_endian_64(x), \
+    default:        bit_swap_endian_64(x)  \
+)
 
 #endif
