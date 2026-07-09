@@ -42,7 +42,7 @@
 #define SHRT_MAX (short)(USHRT_MAX >> 1)
 #define SHRT_MIN (-SHRT_MAX - 1)
 
-#define UINT_MAX (unsigned int)(~0U)
+#define UINT_MAX (unsigned int)(~0UL)
 #define INT_MAX (int)(UINT_MAX >> 1)
 #define INT_MIN (-INT_MAX - 1)
 

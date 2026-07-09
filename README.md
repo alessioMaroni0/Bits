@@ -31,7 +31,7 @@ Macros are defined in the simplest and most effective way possible, allowing the
 ```text
 Bits
 ├── lib/
-│   ├── bits.h            # Main collector header
+│   ├── bits.h            # Main collector headerg
 │   ├── limits/
 │   │   └── limits.h      # Limit constants for fixed-precision integers
 │   ├── math/
