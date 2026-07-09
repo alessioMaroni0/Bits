@@ -10,8 +10,45 @@
 // Inverts all bits of x (Bitwise NOT)
 #define REVERSE(x) (~(x))
 
-// Sets the n-th bit of x to 1
-#define BIT_SET(x, n) ((x) |= (1ULL << (n)))
+
+
+/*
+ * BIT_SET
+ * Sets the n-th bit of x to 1,
+ * where x is the target value 
+ * and n is the bit position to set.
+*/
+static inline uint8_t bit_set_8(uint8_t x, int n) {
+    return x | (1U << n);
+}
+
+static inline uint16_t bit_set_16(uint16_t x, int n) {
+    return x | (1U << n);
+}
+
+static inline uint32_t bit_set_32(uint32_t x, int n) {
+    return x | (1UL << n);
+}
+
+static inline uint64_t bit_set_64(uint64_t x, int n) {
+    return x | (1ULL << n);
+}
+
+/*
+ * Usage:
+ * Pass any integer variable (from uint8_t to uint64_t) as 'x' and the bit position as 'n'.
+ * The macro automatically selects the correct type-specific function at compile time.
+ * Example: my_val = BIT_SET(my_val, 3);
+ */
+#define BIT_SET(x, n) _Generic((x), \
+    uint8_t: bit_set_8(x, n), \
+    uint16_t: bit_set_16(x, n), \
+    uint32_t: bit_set_32(x, n), \
+    uint64_t: bit_set_64(x, n) \
+)
+
+
+
 
 // Clears the n-th bit of x to 0
 #define BIT_CLEAR(x, n)  ((x) &= ~(1ULL << (n)))
