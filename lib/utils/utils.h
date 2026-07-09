@@ -185,6 +185,29 @@ static inline uint64_t bit_toggle_64(uint64_t x, int n) {
 
 
 
+/*
+ * BIT_CHECK
+ * Returns 1 if the n-th bit of x is set to 1, 0 otherwise.
+ */
+static inline int bit_check_8(uint8_t x, int n)   { return (int)((x >> n) & 1U); }
+static inline int bit_check_16(uint16_t x, int n) { return (int)((x >> n) & 1U); }
+static inline int bit_check_32(uint32_t x, int n) { return (int)((x >> n) & 1UL); }
+static inline int bit_check_64(uint64_t x, int n) { return (int)((x >> n) & 1ULL); }
+
+#define BIT_CHECK(x, n) _Generic((x), \
+    uint8_t:        bit_check_8((x), (n)),  \
+    uint16_t:       bit_check_16((x), (n)), \
+    uint32_t:       bit_check_32((x), (n)), \
+    uint64_t:       bit_check_64((x), (n)), \
+    signed char:    bit_check_8((x), (n)),  \
+    short:          bit_check_16((x), (n)), \
+    int:            bit_check_32((x), (n)), \
+    long long:      bit_check_64((x), (n)), \
+    default:        bit_check_32((x), (n))  \
+)
+
+
+
 
 /*
  * BIT_ROL

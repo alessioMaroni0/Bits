@@ -1,86 +1,98 @@
+/*
+ * BITS Library - Comprehensive Test Suite
+ * Test file to verify bitwise operations and overflow checkers.
+ */
+
 #include <stdio.h>
-#include <bits.h>
+#include <stdint.h>
+#include "../lib/bits.h"
 
-int main() {
-    int a = I32_MAX;
-    int b = I32_MIN;
-    unsigned int c = U32_MAX;
+#define TEST_EQUAL(msg, val, expected) \
+    printf("[%s] %s: %s (Valore: %lld, Atteso: %lld)\n", \
+           ((val) == (expected)) ? "OK" : "FAIL", (msg), \
+           ((val) == (expected)) ? "PASSATO" : "FALLITO", \
+           (long long)(val), (long long)(expected))
+
+#define TEST_CHECKER(msg, cond, expected) \
+    printf("[%s] %s: %s (Risultato: %s)\n", \
+           ((cond) == (expected)) ? "OK" : "FAIL", (msg), \
+           ((cond) == (expected)) ? "PASSATO" : "FALLITO", \
+           (cond) ? "SICURO" : "OVERFLOW")
+
+int main(void) {
+
+
+    uint8_t reg8 = 0;
+    reg8 = BIT_SET(reg8, 3);
+    TEST_EQUAL("BIT_SET (uint8_t) bit 3", reg8, 8);
+
+    reg8 = BIT_TOGGLE(reg8, 3);
+    TEST_EQUAL("BIT_TOGGLE (uint8_t) bit 3 (spegne)", reg8, 0);
+
+    uint32_t reg32 = 0;
+    reg32 = BIT_SET(reg32, 16);
+    TEST_EQUAL("BIT_SET (uint32_t) bit 16", reg32, 65536);
+
+    reg32 = BIT_CLEAR(reg32, 16);
+    TEST_EQUAL("BIT_CLEAR (uint32_t) bit 16", reg32, 0);
+
+    // Test POPCOUNT e REVERSE
+    uint16_t pop_test = 0b10110011; // 5 bit a 1
+    TEST_EQUAL("BIT_POPCOUNT (uint16_t)", BIT_POPCOUNT(pop_test), 5);
     
-    printf("--- 1. Limiti dei Tipi a 32 Bit ---\n");
-    printf("Il valore INT_MAX (a) è: %d\n", a);
-    printf("Il valore INT_MIN (b) è: %d\n", b);
-    printf("Il valore UINT_MAX (c) è: %u\n\n", c);
+    uint8_t rev_test = 0x0F;
+    TEST_EQUAL("REVERSE (uint8_t)", (uint8_t)REVERSE(rev_test), 0xF0);
 
-    printf("--- 2. Controlli Overflow/Underflow ---\n");
-    
-    int x_sum = I32_MAX;
-    int y_sum = 1;
-    if (OK_SUM_I32(x_sum, y_sum)) {
-        printf("Somma con segno sicura: %d\n", x_sum + y_sum);
-    } else {
-        printf("[ATTENZIONE] Overflow rilevato! Non posso sommare %d + %d\n", x_sum, y_sum);
-    }
+    uint32_t all_one_test = 0;
+    SET_ALL_ONE(all_one_test);
+    TEST_EQUAL("SET_ALL_ONE (uint32_t)", all_one_test, 0xFFFFFFFFU);
 
-    unsigned int ux_sum = U32_MAX;
-    unsigned int uy_sum = 1;
-    if (OK_SUM_U32(ux_sum, uy_sum)) {
-        printf("Somma unsigned sicura: %u\n", ux_sum + uy_sum);
-    } else {
-        printf("[ATTENZIONE] Overflow unsigned rilevato!\n");
-    }
+    SET_ALL_ZERO(all_one_test);
+    TEST_EQUAL("SET_ALL_ZERO (uint32_t)", all_one_test, 0);
 
-    int x_sub = I32_MIN;
-    int y_sub = 1;
-    if (OK_SUB_I32(x_sub, y_sub)) {
-        printf("Sottrazione sicura: %d\n", x_sub - y_sub);
-    } else {
-        printf("[ATTENZIONE] Underflow rilevato! Non posso sottrarre %d - %d\n", x_sub, y_sub);
-    }
+    TEST_EQUAL("IS_POWER_OF2 (1024)", IS_POWER_OF2(1024), 1);
+    TEST_EQUAL("IS_POWER_OF2 (1023)", IS_POWER_OF2(1023), 0);
+
     printf("\n");
 
-    printf("--- 3. Manipolazione Bit Singoli ---\n");
-    unsigned int registro = 0;
-    
-    BIT_SET(registro, 3);
-    BIT_SET(registro, 5);
-    printf("Registro dopo SET dei bit 3 e 5: %u\n", registro);
-    
-    printf("Verifica bit 3: %s\n", BIT_CHECK(registro, 3) ? "ACCESO" : "SPENTO");
-    printf("Verifica bit 4: %s\n", BIT_CHECK(registro, 4) ? "ACCESO" : "SPENTO");
-    
-    BIT_TOGGLE(registro, 5);
-    BIT_CLEAR(registro, 3);
-    printf("Registro dopo CLEAR(3) e TOGGLE(5): %u\n\n", registro);
+    uint32_t rol_test = 0x80000001U;
+    TEST_EQUAL("BIT_ROL (uint32_t) di 1 pos", BIT_ROL(rol_test, 1), 0x00000003U);
 
-    printf("--- 4. Stato Globale e Popcount ---\n");
-    unsigned int maschera;
-    
-    SET_ALL_ONE(maschera);
-    printf("Dopo SET_ALL_ONE la maschera vale: %u\n", maschera);
-    printf("Numero di bit a 1 (Popcount): %d\n", BIT_POPCOUNT(maschera));
-    
-    SET_ALL_ZERO(maschera);
-    printf("Dopo SET_ALL_ZERO la maschera vale: %u\n", maschera);
-    
-    unsigned int valore = 5;
-    printf("Il REVERSE (NOT) di 5 è: %u\n\n", REVERSE(valore));
+    uint16_t ror_test = 0x0001U;
+    TEST_EQUAL("BIT_ROR (uint16_t) di 1 pos", BIT_ROR(ror_test, 1), 0x8000U);
 
-    printf("--- 5. Rotazione Circolare dei Bit ---\n");
-    unsigned int bit_test = 0x80000001U;
-    
-    unsigned int ruotato_sx = BIT_ROL32(bit_test, 1);
-    unsigned int ruotato_dx = BIT_ROR32(bit_test, 1);
-    
-    printf("Valore iniziale: 0x%X\n", bit_test);
-    printf("Ruotato a Sinistra di 1: 0x%X\n", ruotato_sx);
-    printf("Ruotato a Destra di 1:   0x%X\n\n", ruotato_dx);
+    uint32_t endian_test = 0x11223344U;
+    TEST_EQUAL("BIT_SWAP_ENDIAN (uint32_t)", BIT_SWAP_ENDIAN(endian_test), 0x44332211U);
 
-    printf("--- 6. Inversione Endianness ---\n");
-    unsigned int dati_network = 0x12345678U;
-    unsigned int dati_swappati = SWAP_ENDIAN32(dati_network);
-    
-    printf("Dato originale: 0x%08X\n", dati_network);
-    printf("Dato invertito: 0x%08X\n", dati_swappati);
+    uint8_t endian_byte = 0xAA;
+    TEST_EQUAL("BIT_SWAP_ENDIAN (uint8_t - invariato)", BIT_SWAP_ENDIAN(endian_byte), 0xAA);
+
+    printf("\n");
+
+    int32_t s_max = I32_MAX;
+    TEST_CHECKER("CHECK_SUM (int) sicuro", CHECK_SUM(s_max - 10, 5), 1);
+    TEST_CHECKER("CHECK_SUM (int) con overflow", CHECK_SUM(s_max, 1), 0);
+
+    uint8_t u_max = U8_MAX;
+    TEST_CHECKER("CHECK_SUM (uint8_t) sicuro", CHECK_SUM((uint8_t)200, (uint8_t)55), 1);
+    TEST_CHECKER("CHECK_SUM (uint8_t) con wrapping", CHECK_SUM(u_max, (uint8_t)1), 0);
+
+    int16_t s16_min = I16_MIN;
+    TEST_CHECKER("CHECK_SUB (int16_t) sicuro", CHECK_SUB((short)0, (short)100), 1);
+    TEST_CHECKER("CHECK_SUB (int16_t) con underflow", CHECK_SUB(s16_min, (short)1), 0);
+
+    uint32_t u32_val = 10;
+    TEST_CHECKER("CHECK_SUB (uint32_t) sotto lo zero", CHECK_SUB(u32_val, 11U), 0);
+
+    int32_t mul_val = 2000000000;
+    TEST_CHECKER("CHECK_MUL (int) sicuro", CHECK_MUL(mul_val, 1), 1);
+    TEST_CHECKER("CHECK_MUL (int) con overflow", CHECK_MUL(mul_val, 2), 0);
+
+    int8_t div_min = I8_MIN;
+    TEST_CHECKER("CHECK_DIV divisione per zero", CHECK_DIV((signed char)10, (signed char)0), 0);
+    TEST_CHECKER("CHECK_DIV sicuro", CHECK_DIV((signed char)10, (signed char)2), 1);
+    TEST_CHECKER("CHECK_DIV TMin / -1 (overflow)", CHECK_DIV(div_min, (signed char)-1), 0);
+
 
     return 0;
 }
