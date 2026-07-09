@@ -20,12 +20,12 @@
 #define I16_MIN (-I16_MAX - 1)         // Min signed 16-bit: asymmetric two's complement lower bound
 
 // 32-bit integer boundaries
-#define U32_MAX (uint32_t)(~0U)        // Max unsigned 32-bit: set all bits to 1
+#define U32_MAX (uint32_t)(~0L)        // Max unsigned 32-bit: set all bits to 1
 #define I32_MAX (int32_t)(U32_MAX >> 1) // Max signed 32-bit: clear the sign bit (MSB)
 #define I32_MIN (-I32_MAX - 1)         // Min signed 32-bit: asymmetric two's complement lower bound
 
 // 64-bit integer boundaries
-#define U64_MAX (uint64_t)(~0U)        // Max unsigned 64-bit: set all bits to 1
+#define U64_MAX (uint64_t)(~0ULL)        // Max unsigned 64-bit: set all bits to 1
 #define I64_MAX (int64_t)(U64_MAX >> 1) // Max signed 64-bit: clear the sign bit (MSB)
 #define I64_MIN (-I64_MAX - 1)         // Min signed 64-bit: asymmetric two's complement lower bound
 

@@ -153,12 +153,18 @@ static inline uint64_t bit_toggle_64(uint64_t x, int n) {
  */
 #define SET_ALL_ONE(x) do { (x) = -1; } while(0)
 
+
+
+
 /*
  * SET_ALL_ZERO
  * Sets all bits of x to 0.
  * Works safely for all integer types.
  */
 #define SET_ALL_ZERO(x) do { (x) = 0; } while(0)
+
+
+
 
 /*
  * BIT_POPCOUNT
@@ -167,12 +173,18 @@ static inline uint64_t bit_toggle_64(uint64_t x, int n) {
  */
 #define BIT_POPCOUNT(x) __builtin_popcountll((unsigned long long)(x))
 
+
+
+
 /*
  * IS_POWER_OF2
  * Returns 1 (true) if x is a power of 2, and 0 (false) otherwise.
  * Works safely for all signed and unsigned integer types.
  */
 #define IS_POWER_OF2(x) (((x) > 0) && (((x) & ((x) - 1)) == 0))
+
+
+
 
 /*
  * BIT_ROL
@@ -254,6 +266,9 @@ static inline uint64_t bit_ror_64(uint64_t x, int n) {
     long long:      bit_ror_64((x), (n)), \
     default:        bit_ror_64((x), (n))  \
 )
+
+
+
 
 /*
  * BIT_SWAP_ENDIAN
